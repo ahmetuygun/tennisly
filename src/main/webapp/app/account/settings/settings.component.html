@@ -2,19 +2,18 @@
   <div class="row justify-content-center">
     <div class="col-md-8">
       <h2 *ngIf="account">
-        User settings for [<strong>{{ account.login }}</strong
-        >]
+        Kullanıcı ayarları : <strong>{{ account.login }}</strong>
       </h2>
 
       <div class="alert alert-success" *ngIf="success">
-        <strong>Settings saved!</strong>
+        <strong>Ayarlar kaydedildi!</strong>
       </div>
 
       <jhi-alert-error></jhi-alert-error>
 
       <form name="form" role="form" (ngSubmit)="save()" [formGroup]="settingsForm" *ngIf="account" novalidate>
         <div class="form-group">
-          <label class="form-control-label" for="firstName">First Name</label>
+          <label class="form-control-label" for="firstName">İsim</label>
           <input
             type="text"
             class="form-control"
@@ -30,22 +29,20 @@
               settingsForm.get('firstName')!.invalid && (settingsForm.get('firstName')!.dirty || settingsForm.get('firstName')!.touched)
             "
           >
-            <small class="form-text text-danger" *ngIf="settingsForm.get('firstName')?.errors?.required">
-              Your first name is required.
-            </small>
+            <small class="form-text text-danger" *ngIf="settingsForm.get('firstName')?.errors?.required"> İsim alanı boş olamaz. </small>
 
             <small class="form-text text-danger" *ngIf="settingsForm.get('firstName')?.errors?.minlength">
-              Your first name is required to be at least 1 character.
+              İsim alanı en az 1 karakterden oluşmalıdır.
             </small>
 
             <small class="form-text text-danger" *ngIf="settingsForm.get('firstName')?.errors?.maxlength">
-              Your first name cannot be longer than 50 characters.
+              İsim alanı 50 karakterden daha fazla olamaz.
             </small>
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" for="lastName">Last Name</label>
+          <label class="form-control-label" for="lastName">Soyisim</label>
           <input
             type="text"
             class="form-control"
@@ -59,16 +56,14 @@
           <div
             *ngIf="settingsForm.get('lastName')!.invalid && (settingsForm.get('lastName')!.dirty || settingsForm.get('lastName')!.touched)"
           >
-            <small class="form-text text-danger" *ngIf="settingsForm.get('lastName')?.errors?.required">
-              Your last name is required.
-            </small>
+            <small class="form-text text-danger" *ngIf="settingsForm.get('lastName')?.errors?.required"> Soyisim alanı boş olamaz. </small>
 
             <small class="form-text text-danger" *ngIf="settingsForm.get('lastName')?.errors?.minlength">
-              Your last name is required to be at least 1 character.
+              Soyisim alanı en az 1 karakterden oluşmalıdır.
             </small>
 
             <small class="form-text text-danger" *ngIf="settingsForm.get('lastName')?.errors?.maxlength">
-              Your last name cannot be longer than 50 characters.
+              Soyisim alanı 50 karakterden daha fazla olamaz.
             </small>
           </div>
         </div>
@@ -86,21 +81,21 @@
           />
 
           <div *ngIf="settingsForm.get('email')!.invalid && (settingsForm.get('email')!.dirty || settingsForm.get('email')!.touched)">
-            <small class="form-text text-danger" *ngIf="settingsForm.get('email')?.errors?.required"> Your email is required. </small>
+            <small class="form-text text-danger" *ngIf="settingsForm.get('email')?.errors?.required"> Email alanı boş olamaz. </small>
 
-            <small class="form-text text-danger" *ngIf="settingsForm.get('email')?.errors?.email"> Your email is invalid. </small>
+            <small class="form-text text-danger" *ngIf="settingsForm.get('email')?.errors?.email"> Email formatı yanlış. </small>
 
             <small class="form-text text-danger" *ngIf="settingsForm.get('email')?.errors?.minlength">
-              Your email is required to be at least 5 characters.
+              Email alanı en az 1 karakterden oluşmalıdır.
             </small>
 
             <small class="form-text text-danger" *ngIf="settingsForm.get('email')?.errors?.maxlength">
-              Your email cannot be longer than 100 characters.
+              Soyisim alanı 100 karakterden daha fazla olamaz.
             </small>
           </div>
         </div>
 
-        <button type="submit" [disabled]="settingsForm.invalid" class="btn btn-primary" data-cy="submit">Save</button>
+        <button type="submit" [disabled]="settingsForm.invalid" class="btn btn-primary" data-cy="submit">Kaydet</button>
       </form>
     </div>
   </div>

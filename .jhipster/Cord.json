@@ -1,0 +1,42 @@
+{
+  "name": "Cord",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "adress",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "image",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "image"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "GeneralStatus",
+      "fieldValues": "ACTIVE (Aktif),PASSIVE (Pasif),DELETED (Silinmiş)"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "challenge",
+      "otherEntityRelationshipName": "cord",
+      "relationshipName": "challenge",
+      "ownerSide": false
+    }
+  ],
+  "entityTableName": "cord",
+  "dto": "no",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20211104210053"
+}

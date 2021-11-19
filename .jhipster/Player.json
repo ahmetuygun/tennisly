@@ -1,0 +1,52 @@
+{
+  "name": "Player",
+  "fields": [
+    {
+      "fieldName": "fullName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "gender",
+      "fieldType": "Gender",
+      "fieldValues": "MAN (Erkek),WOMEN (Kadın)"
+    },
+    {
+      "fieldName": "level",
+      "fieldType": "Level",
+      "fieldValues": "BEGINNER (Başlangıç),INTERMEDIATE (Orta),ADVANCED (İyi),PROFICIENT (Profesyonel)"
+    },
+    {
+      "fieldName": "phone",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "photo",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "image"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "GeneralStatus",
+      "fieldValues": "ACTIVE (Aktif),PASSIVE (Pasif),DELETED (Silinmiş)"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "player",
+      "relationshipName": "internalUser",
+      "ownerSide": true
+    }
+  ],
+  "entityTableName": "player",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20211104210054"
+}

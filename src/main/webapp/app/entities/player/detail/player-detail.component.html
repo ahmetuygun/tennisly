@@ -1,0 +1,48 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="player">
+      <h2 data-cy="playerDetailsHeading"><span>Oyuncu Profili</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+      <jhi-alert></jhi-alert>
+      <dd>
+        <div *ngIf="player.photo">
+          <a (click)="openFile(player.photo, player.photoContentType)">
+            <img [src]="'data:' + player.photoContentType + ';base64,' + player.photo" style="max-width: 100%" alt="player image" />
+          </a>
+        </div>
+      </dd>
+      <dl class="row-md jh-entity-details">
+        <dt><span>İsim:</span></dt>
+        <dd>
+          <span>{{ player.fullName }}</span>
+        </dd>
+
+        <dt><span>Seviye:</span></dt>
+        <dd>
+          <span>{{ player.level }}</span>
+        </dd>
+        <dt><span>Phone:</span></dt>
+        <dd>
+          <span>{{ player.phone }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Geri</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-challenge"
+        [routerLink]="['/challenge', player.id, 'new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span> Maç Teklifi </span>
+      </button>
+    </div>
+  </div>
+</div>

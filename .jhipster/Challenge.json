@@ -1,0 +1,52 @@
+{
+  "name": "Challenge",
+  "fields": [
+    {
+      "fieldName": "matchTime",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "challengeStatus",
+      "fieldType": "ChallengeStatus",
+      "fieldValues": "REQUESTED (Teklif),ACCEPTED (Kabul),REJECTED (Red)"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "GeneralStatus",
+      "fieldValues": "ACTIVE (Aktif),PASSIVE (Pasif),DELETED (Silinmiş)"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "cord",
+      "otherEntityRelationshipName": "challenge",
+      "relationshipName": "cord",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "player",
+      "otherEntityRelationshipName": "challenge",
+      "relationshipName": "proposer",
+      "otherEntityField": "fullName"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "player",
+      "otherEntityRelationshipName": "challenge",
+      "relationshipName": "acceptor",
+      "otherEntityField": "fullName"
+    }
+  ],
+  "entityTableName": "challenge",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20211104210055"
+}

@@ -1,6 +1,7 @@
 package com.tennisly.club.web.rest;
 
 import com.tennisly.club.domain.User;
+import com.tennisly.club.repository.PlayerRepository;
 import com.tennisly.club.repository.UserRepository;
 import com.tennisly.club.security.SecurityUtils;
 import com.tennisly.club.service.MailService;
@@ -41,10 +42,18 @@ public class AccountResource {
 
     private final MailService mailService;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
+    private final PlayerRepository playerRepository;
+
+    public AccountResource(
+        UserRepository userRepository,
+        UserService userService,
+        MailService mailService,
+        PlayerRepository playerRepository
+    ) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
+        this.playerRepository = playerRepository;
     }
 
     /**
@@ -62,7 +71,6 @@ public class AccountResource {
             throw new InvalidPasswordException();
         }
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
-        mailService.sendActivationEmail(user);
     }
 
     /**
@@ -97,12 +105,16 @@ public class AccountResource {
      * @return the current user.
      * @throws RuntimeException {@code 500 (Internal Server Error)} if the user couldn't be returned.
      */
+
     @GetMapping("/account")
     public AdminUserDTO getAccount() {
-        return userService
+        AdminUserDTO adminUserDTO = userService
             .getUserWithAuthorities()
             .map(AdminUserDTO::new)
             .orElseThrow(() -> new AccountResourceException("User could not be found"));
+
+        playerRepository.findOneByInternalUser_Login(adminUserDTO.getLogin()).ifPresent(item -> adminUserDTO.setPlayerId(item.getId()));
+        return adminUserDTO;
     }
 
     /**

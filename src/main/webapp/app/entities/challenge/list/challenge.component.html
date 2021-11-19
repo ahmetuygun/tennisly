@@ -1,0 +1,78 @@
+<div>
+  <h2 id="page-heading" data-cy="ChallengeHeading">
+    <span>Karşılaşmalarım</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Listeyi yenile</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="challenges?.length === 0">
+    <span>Teklif yada karşılaşma bulunamadı.</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="challenges && challenges.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
+          <th scope="col" jhiSortBy="matchTime"><span>Maç Tarihi</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="challengeStatus"><span>Durum</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="cord.id"><span>Kort</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="proposer.fullName"><span>Ev Sahibi</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="acceptor.fullName"><span>Deplasman</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let challenge of challenges; trackBy: trackId"
+          data-cy="entityTable"
+          [routerLink]="['/challenge', challenge.id, 'view']"
+        >
+          <td>{{ challenge.matchTime | formatMediumDatetime }}</td>
+          <td>{{ challenge.challengeStatus }}</td>
+          <td>
+            <div *ngIf="challenge.cord">
+              <a [routerLink]="['/cord', challenge.cord?.id, 'view']">{{ challenge.cord?.name }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="challenge.proposer">
+              <a [routerLink]="['/player', challenge.proposer?.id, 'view']">{{ challenge.proposer?.fullName }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="challenge.acceptor">
+              <a [routerLink]="['/player', challenge.acceptor?.id, 'view']">{{ challenge.acceptor?.fullName }}</a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="challenges && challenges.length > 0">
+    <div class="row justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="row justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="ngbPaginationPage"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="loadPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>

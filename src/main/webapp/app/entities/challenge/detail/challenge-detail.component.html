@@ -1,0 +1,51 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="challenge">
+      <h2 data-cy="challengeDetailsHeading"><span>Karşılaşma</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>Karşılaşma Tarihi:</span></dt>
+        <dd>
+          <span>{{ challenge.matchTime | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Durum:</span></dt>
+        <dd>
+          <span>{{ challenge.challengeStatus }}</span>
+        </dd>
+
+        <dt><span>Kort:</span></dt>
+        <dd>
+          <div *ngIf="challenge.cord">
+            <a [routerLink]="['/cord', challenge.cord?.id, 'view']">{{ challenge.cord?.name }}</a>
+          </div>
+        </dd>
+        <dt><span>Ev Sahibi:</span></dt>
+        <dd>
+          <div *ngIf="challenge.proposer">
+            <a [routerLink]="['/player', challenge.proposer?.id, 'view']">{{ challenge.proposer?.fullName }}</a>
+          </div>
+        </dd>
+        <dt><span>Deplasman:</span></dt>
+        <dd>
+          <div *ngIf="challenge.acceptor">
+            <a [routerLink]="['/player', challenge.acceptor?.id, 'view']">{{ challenge.acceptor?.fullName }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Geri</span>
+      </button>
+
+      <button type="button" class="btn btn-primary"><fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Düzenle</span></button>
+      <button type="button" class="btn btn-primary"><fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>İptal Et</span></button>
+      <button type="button" class="btn btn-primary"><fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Reddet</span></button>
+    </div>
+  </div>
+</div>

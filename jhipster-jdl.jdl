@@ -1,0 +1,68 @@
+
+entity Cord {
+	name String,
+    adress String,
+    image ImageBlob
+    status GeneralStatus
+}
+
+entity Player {
+	fullName String,
+    gender Gender,
+    level Level,
+    phone String,
+    photo ImageBlob
+    status GeneralStatus
+}
+
+enum Level {
+    BEGINNER("Başlangıç")
+    INTERMEDIATE("Orta")
+    ADVANCED("İyi")
+    PROFICIENT("Profesyonel")
+}
+
+enum GeneralStatus {
+    ACTIVE("Aktif")
+    PASSIVE("Pasif")
+    DELETED("Silinmiş")
+}
+
+enum Gender {
+    MAN("Erkek"), WOMEN("Kadın")
+}
+
+enum ChallengeStatus {
+    REQUESTED("Teklif"), ACCEPTED("Kabul"),  REJECTED("Red")
+}
+
+
+entity Challenge {
+    matchTime Instant
+    challengeStatus ChallengeStatus
+    status GeneralStatus
+
+}
+
+paginate Player with pagination
+paginate Challenge with pagination
+
+filter Challenge, Cord, Player
+
+
+relationship OneToOne {
+	Challenge to Cord,
+    Player{internalUser} to User
+
+}
+
+relationship ManyToOne {
+  Challenge{proposer(fullName)} to Player
+  Challenge{acceptor(fullName)} to Player
+}
+
+
+service all with serviceImpl
+
+// Set an angular suffix
+// angularSuffix * with mySuffix

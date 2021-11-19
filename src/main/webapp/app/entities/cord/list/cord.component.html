@@ -1,0 +1,79 @@
+<div>
+  <h2 id="page-heading" data-cy="CordHeading">
+    <span>Cords</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-cord"
+        [routerLink]="['/cord/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span> Create a new Cord </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="cords?.length === 0">
+    <span>No cords found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="cords && cords.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <th scope="col"><span>ID</span></th>
+          <th scope="col"><span>Name</span></th>
+          <th scope="col"><span>Adress</span></th>
+          <th scope="col"><span>Image</span></th>
+          <th scope="col"><span>Status</span></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cord of cords; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/cord', cord.id, 'view']">{{ cord.id }}</a>
+          </td>
+          <td>{{ cord.name }}</td>
+          <td>{{ cord.adress }}</td>
+          <td>
+            <a *ngIf="cord.image" (click)="openFile(cord.image, cord.imageContentType)">
+              <img [src]="'data:' + cord.imageContentType + ';base64,' + cord.image" style="max-height: 30px" alt="cord image" />
+            </a>
+            <span *ngIf="cord.image">{{ cord.imageContentType }}, {{ byteSize(cord.image) }}</span>
+          </td>
+          <td>{{ cord.status }}</td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button type="submit" [routerLink]="['/cord', cord.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline">View</span>
+              </button>
+
+              <button type="submit" [routerLink]="['/cord', cord.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(cord)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

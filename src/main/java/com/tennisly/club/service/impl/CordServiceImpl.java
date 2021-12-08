@@ -68,19 +68,6 @@ public class CordServiceImpl implements CordService {
         return cordRepository.findAll();
     }
 
-    /**
-     *  Get all the cords where Challenge is {@code null}.
-     *  @return the list of entities.
-     */
-    @Transactional(readOnly = true)
-    public List<Cord> findAllWhereChallengeIsNull() {
-        log.debug("Request to get all cords where Challenge is null");
-        return StreamSupport
-            .stream(cordRepository.findAll().spliterator(), false)
-            .filter(cord -> cord.getChallenge() == null)
-            .collect(Collectors.toList());
-    }
-
     @Override
     @Transactional(readOnly = true)
     public Optional<Cord> findOne(Long id) {

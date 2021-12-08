@@ -403,33 +403,6 @@ class CordResourceIT {
         defaultCordShouldNotBeFound("status.specified=false");
     }
 
-    @Test
-    @Transactional
-    void getAllCordsByChallengeIsEqualToSomething() throws Exception {
-        // Initialize the database
-        cordRepository.saveAndFlush(cord);
-        Challenge challenge;
-        if (TestUtil.findAll(em, Challenge.class).isEmpty()) {
-            challenge = ChallengeResourceIT.createEntity(em);
-            em.persist(challenge);
-            em.flush();
-        } else {
-            challenge = TestUtil.findAll(em, Challenge.class).get(0);
-        }
-        em.persist(challenge);
-        em.flush();
-        cord.setChallenge(challenge);
-        challenge.setCord(cord);
-        cordRepository.saveAndFlush(cord);
-        Long challengeId = challenge.getId();
-
-        // Get all the cordList where challenge equals to challengeId
-        defaultCordShouldBeFound("challengeId.equals=" + challengeId);
-
-        // Get all the cordList where challenge equals to (challengeId + 1)
-        defaultCordShouldNotBeFound("challengeId.equals=" + (challengeId + 1));
-    }
-
     /**
      * Executes the search, and checks that the default entity is returned.
      */

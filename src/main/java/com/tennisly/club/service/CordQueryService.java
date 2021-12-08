@@ -94,12 +94,6 @@ public class CordQueryService extends QueryService<Cord> {
             if (criteria.getStatus() != null) {
                 specification = specification.and(buildSpecification(criteria.getStatus(), Cord_.status));
             }
-            if (criteria.getChallengeId() != null) {
-                specification =
-                    specification.and(
-                        buildSpecification(criteria.getChallengeId(), root -> root.join(Cord_.challenge, JoinType.LEFT).get(Challenge_.id))
-                    );
-            }
         }
         return specification;
     }

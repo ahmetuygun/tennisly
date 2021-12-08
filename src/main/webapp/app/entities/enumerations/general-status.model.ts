@@ -1,7 +1,14 @@
+import { Gender } from './gender.model';
+
 export enum GeneralStatus {
-  ACTIVE = 'Aktif',
+  ACTIVE = 'ACTIVE',
 
-  PASSIVE = 'Pasif',
+  PASSIVE = 'PASSIVE',
 
-  DELETED = 'Silinmiş',
+  DELETED = 'DELETED',
 }
+export const GenderLabelMapping: Record<GeneralStatus, string> = {
+  [GeneralStatus.ACTIVE]: 'Aktif',
+  [GeneralStatus.PASSIVE]: 'Pasif',
+  [GeneralStatus.DELETED]: 'Silinmiş',
+};

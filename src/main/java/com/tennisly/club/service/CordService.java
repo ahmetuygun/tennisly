@@ -35,7 +35,6 @@ public interface CordService {
      *
      * @return the {@link List} of entities.
      */
-    List<Cord> findAllWhereChallengeIsNull();
 
     /**
      * Get the "id" cord.

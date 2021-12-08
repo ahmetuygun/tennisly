@@ -13,4 +13,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PlayerRepository extends JpaRepository<Player, Long>, JpaSpecificationExecutor<Player> {
     Optional<Player> findOneByInternalUser_Login(String login);
+    Optional<Player> findOneByInternalUser_Id(Long id);
 }

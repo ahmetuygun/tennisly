@@ -121,6 +121,13 @@ jhipster:
   http:
     cache: # Used by the CachingHttpHeadersFilter
       timeToLiveInDays: 1461
+  cache: # Cache configuration
+    redis: # Redis configuration
+      expiration: 3600 # By default objects stay 1 hour (in seconds) in the cache
+      server: redis://localhost:6379
+      cluster: false
+      # server: redis://localhost:6379,redis://localhost:16379,redis://localhost:26379
+      # cluster: true
   registry:
     password: admin
   security:
@@ -131,7 +138,7 @@ jhipster:
         # - In the JHipster Registry (which includes a Spring Cloud Config server)
         # - In a separate `application-prod.yml` file, in the same folder as your executable JAR file
         # - In the `JHIPSTER_SECURITY_AUTHENTICATION_JWT_BASE64_SECRET` environment variable
-        base64-secret: NzgyMjAxZDFjZTkzYjUwN2FjOGNjZDNhYTg2YzBjYjY2YmViNDM5MzBlMmQ2MTk1MjY2NzgwOWM4OWQ1NjcyZmM3OTE0OGFiMzFlOWM4MzAwM2QyODVjNjZiYTEwNGU5MjUyNDJjYjM5YjI2ZDdiOGIzYzgyNmVhNmQwMjE0ODk=
+        base64-secret: NmY1ODBhZDNmOWI5ZTI1ZTg2NWNhODQzYjFkMzUzOWVkZmRiNjQxNDcxZWY3Y2MwZjdjZjc5Y2ZmNmExZjFlNDBlNGRjYzFkMTRiODU2NjU0YjI5OWI3YmRjZDZjMjEwMzAxZDMwZmZkMDVkMjM0NDM4ZDZlMjU1N2UwOGY1OTk=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000

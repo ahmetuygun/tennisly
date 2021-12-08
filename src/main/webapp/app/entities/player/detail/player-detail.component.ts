@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { IPlayer } from '../player.model';
 import { DataUtils } from 'app/core/util/data-util.service';
+import { Level } from 'app/entities/enumerations/level.model';
 
 @Component({
   selector: 'jhi-player-detail',
@@ -10,7 +11,7 @@ import { DataUtils } from 'app/core/util/data-util.service';
 })
 export class PlayerDetailComponent implements OnInit {
   player: IPlayer | null = null;
-
+  Level = Level;
   constructor(protected dataUtils: DataUtils, protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {

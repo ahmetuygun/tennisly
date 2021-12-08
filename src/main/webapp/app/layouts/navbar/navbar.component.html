@@ -1,7 +1,7 @@
 <nav data-cy="navbar" class="navbar navbar-dark navbar-expand-md bg-dark">
   <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
     <span class="logo-img"></span>
-    <span class="navbar-title">Tennisly Club</span>
+    <span class="navbar-title">TENNISLY CLUB</span>
   </a>
   <a
     class="navbar-toggler d-lg-none"
@@ -146,7 +146,7 @@
         </a>
         <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="account-menu">
           <li *ngSwitchCase="true">
-            <a class="dropdown-item" routerLink="account/settings" routerLinkActive="active" (click)="collapseNavbar()" data-cy="settings">
+            <a class="dropdown-item" (click)="goToPlayerProfile(); collapseNavbar()" data-cy="settings">
               <fa-icon icon="wrench" [fixedWidth]="true"></fa-icon>
               <span>Profil</span>
             </a>

@@ -23,18 +23,12 @@ export class MainComponent implements OnInit {
   }
 
   private getPageTitle(routeSnapshot: ActivatedRouteSnapshot): string {
-    const title: string = routeSnapshot.data['pageTitle'] ?? '';
-    if (routeSnapshot.firstChild) {
-      return this.getPageTitle(routeSnapshot.firstChild) || title;
-    }
-    return title;
+    return 'Tennisly';
   }
 
   private updateTitle(): void {
-    let pageTitle = this.getPageTitle(this.router.routerState.snapshot.root);
-    if (!pageTitle) {
-      pageTitle = 'Tennisly';
-    }
+    const pageTitle = 'Tennisly';
+
     this.titleService.setTitle(pageTitle);
   }
 }

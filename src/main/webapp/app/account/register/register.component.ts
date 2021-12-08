@@ -4,6 +4,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 
 import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/config/error.constants';
 import { RegisterService } from './register.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'jhi-register',
@@ -34,7 +35,7 @@ export class RegisterComponent implements AfterViewInit {
     confirmPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
   });
 
-  constructor(private registerService: RegisterService, private fb: FormBuilder) {}
+  constructor(private router: Router, private registerService: RegisterService, private fb: FormBuilder) {}
 
   ngAfterViewInit(): void {
     if (this.login) {
@@ -55,7 +56,10 @@ export class RegisterComponent implements AfterViewInit {
       const login = this.registerForm.get(['login'])!.value;
       const email = this.registerForm.get(['email'])!.value;
       this.registerService.save({ login, email, password, langKey: 'en' }).subscribe(
-        () => (this.success = true),
+        () => {
+          this.success = true;
+          this.router.navigate(['/login']);
+        },
         response => this.processError(response)
       );
     }

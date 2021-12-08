@@ -33,8 +33,7 @@ public class Challenge implements Serializable {
     private GeneralStatus status;
 
     @JsonIgnoreProperties(value = { "challenge" }, allowSetters = true)
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
     private Cord cord;
 
     @ManyToOne

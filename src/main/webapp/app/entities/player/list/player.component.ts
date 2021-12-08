@@ -5,6 +5,7 @@ import { combineLatest } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IPlayer } from '../player.model';
+import { Level } from 'app/entities/enumerations/level.model';
 
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { PlayerService } from '../service/player.service';
@@ -24,7 +25,7 @@ export class PlayerComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
-
+  Level = Level;
   constructor(
     protected playerService: PlayerService,
     protected activatedRoute: ActivatedRoute,

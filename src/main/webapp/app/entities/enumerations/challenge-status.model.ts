@@ -1,7 +1,18 @@
+import { Gender } from './gender.model';
+
 export enum ChallengeStatus {
-  REQUESTED = 'Teklif',
+  REQUESTED = 'REQUESTED',
 
-  ACCEPTED = 'Kabul',
+  ACCEPTED = 'ACCEPTED',
 
-  REJECTED = 'Red',
+  REJECTED = 'REJECTED',
+
+  CANCELLED = 'CANCELLED',
 }
+
+export const ChallengeStatusLabelMapping: Record<ChallengeStatus, string> = {
+  [ChallengeStatus.REQUESTED]: 'Teklif',
+  [ChallengeStatus.ACCEPTED]: 'Kabul',
+  [ChallengeStatus.REJECTED]: 'Red',
+  [ChallengeStatus.CANCELLED]: 'İptal',
+};

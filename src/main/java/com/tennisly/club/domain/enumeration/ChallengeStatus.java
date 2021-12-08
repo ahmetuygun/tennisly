@@ -6,7 +6,8 @@ package com.tennisly.club.domain.enumeration;
 public enum ChallengeStatus {
     REQUESTED("Teklif"),
     ACCEPTED("Kabul"),
-    REJECTED("Red");
+    REJECTED("Red"),
+    CANCELLED("İptal");
 
     private final String value;
 

@@ -14,6 +14,12 @@ h4 {
   font-weight: 300;
 }
 
+body {
+  font-weight: 300;
+  background-image: url('../images/tennisback.jpg');
+  width: 100%;
+  height: auto;
+}
 /* Increase contrast of links to get 100% on Lighthouse Accessability Audit. Override this color if you want to change the link color, or use a Bootswatch theme */
 a {
   color: #533f03;
@@ -73,6 +79,7 @@ Generic styles
   padding: 1.5%;
   margin-top: 20px;
   border: none;
+  opacity: 0.9;
 }
 
 .error {
@@ -100,6 +107,10 @@ Generic styles
 .readonly {
   background-color: #eee;
   opacity: 1;
+}
+
+.profilePhoto {
+  max-width: 50%;
 }
 
 .footer {
@@ -158,9 +169,15 @@ entity detail page css
 ========================================================================== */
 .row-md.jh-entity-details {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: 1fr 2fr;
   column-gap: 10px;
   line-height: 1.5;
+  dd {
+    border-bottom: 1px solid #eee;
+  }
+  dt {
+    padding: 3px;
+  }
 }
 
 @media screen and (min-width: 768px) {
@@ -172,11 +189,11 @@ entity detail page css
       text-align: right;
       text-overflow: ellipsis;
       white-space: nowrap;
-      padding: 0.5em 0;
+      padding: 3px;
     }
     dd {
       border-bottom: 1px solid #eee;
-      padding: 0.5em 0;
+      padding: 3px;
       margin-left: 0;
     }
   }
@@ -200,3 +217,55 @@ ui bootstrap tweaks
 }
 
 /* jhipster-needle-scss-add-main JHipster will add new css style */
+
+@media (min-width: 576px) {
+  .profilePhoto {
+    max-width: 40%;
+  }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+  .profilePhoto {
+    max-width: 30%;
+  }
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+  .container-fluid {
+    padding-right: 150px;
+    padding-left: 150px;
+  }
+  .profilePhoto {
+    max-width: 20%;
+  }
+}
+
+// X-Large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+  .container-fluid {
+    padding-right: 300px;
+    padding-left: 300px;
+  }
+}
+
+// XX-Large devices (larger desktops, 1400px and up)
+@media (min-width: 1400px) {
+}
+
+.table td {
+  padding: 0.75rem;
+  vertical-align: middle !important;
+  border-top: 1px solid #dee2e6;
+}
+
+.col-12 {
+  flex: 0 0 100%;
+  max-width: 100%;
+  text-align: center;
+}
+
+.btn {
+  margin: 1px;
+}

@@ -3,11 +3,18 @@ package com.tennisly.club.service;
 import com.tennisly.club.domain.*; // for static metamodels
 import com.tennisly.club.domain.Challenge;
 import com.tennisly.club.repository.ChallengeRepository;
+import com.tennisly.club.repository.PlayerRepository;
+import com.tennisly.club.repository.UserRepository;
+import com.tennisly.club.security.SecurityUtils;
 import com.tennisly.club.service.criteria.ChallengeCriteria;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.criteria.JoinType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -51,11 +58,26 @@ public class ChallengeQueryService extends QueryService<Challenge> {
      * @param page The page, which should be returned.
      * @return the matching entities.
      */
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    PlayerRepository playerRepository;
+
     @Transactional(readOnly = true)
     public Page<Challenge> findByCriteria(ChallengeCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
         final Specification<Challenge> specification = createSpecification(criteria);
-        return challengeRepository.findAll(specification, page);
+
+        final Optional<User> user = userService.getUserWithAuthorities();
+        if (user.isPresent()) {
+            Optional<Player> player = playerRepository.findOneByInternalUser_Id(user.get().getId());
+            if (player.isPresent()) {
+                return challengeRepository.findAllByAcceptor_IdOrProposer_Id(player.get().getId(), player.get().getId(), page);
+            }
+        }
+        return Page.empty();
     }
 
     /**
@@ -94,6 +116,7 @@ public class ChallengeQueryService extends QueryService<Challenge> {
             if (criteria.getStatus() != null) {
                 specification = specification.and(buildSpecification(criteria.getStatus(), Challenge_.status));
             }
+
             if (criteria.getCordId() != null) {
                 specification =
                     specification.and(

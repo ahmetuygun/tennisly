@@ -23,7 +23,6 @@
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
           <th scope="col" jhiSortBy="matchTime"><span>Maç Tarihi</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="challengeStatus"><span>Durum</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="cord.id"><span>Kort</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="proposer.fullName"><span>Ev Sahibi</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="acceptor.fullName"><span>Deplasman</span> <fa-icon icon="sort"></fa-icon></th>
@@ -37,7 +36,6 @@
           [routerLink]="['/challenge', challenge.id, 'view']"
         >
           <td>{{ challenge.matchTime | formatMediumDatetime }}</td>
-          <td>{{ challenge.challengeStatus }}</td>
           <td>
             <div *ngIf="challenge.cord">
               <a [routerLink]="['/cord', challenge.cord?.id, 'view']">{{ challenge.cord?.name }}</a>

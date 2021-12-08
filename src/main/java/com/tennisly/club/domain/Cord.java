@@ -36,12 +36,6 @@ public class Cord implements Serializable {
     @Column(name = "status")
     private GeneralStatus status;
 
-    @JsonIgnoreProperties(value = { "cord", "proposer", "acceptor" }, allowSetters = true)
-    @OneToOne(mappedBy = "cord")
-    private Challenge challenge;
-
-    // jhipster-needle-entity-add-field - JHipster will add fields here
-
     public Long getId() {
         return this.id;
     }
@@ -118,25 +112,6 @@ public class Cord implements Serializable {
 
     public void setStatus(GeneralStatus status) {
         this.status = status;
-    }
-
-    public Challenge getChallenge() {
-        return this.challenge;
-    }
-
-    public void setChallenge(Challenge challenge) {
-        if (this.challenge != null) {
-            this.challenge.setCord(null);
-        }
-        if (challenge != null) {
-            challenge.setCord(this);
-        }
-        this.challenge = challenge;
-    }
-
-    public Cord challenge(Challenge challenge) {
-        this.setChallenge(challenge);
-        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

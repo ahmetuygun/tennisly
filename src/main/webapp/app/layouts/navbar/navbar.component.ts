@@ -46,6 +46,14 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
+  goToPlayerProfile(): void {
+    this.accountService.getAuthenticationState().subscribe(account => {
+      if (account) {
+        this.router.navigate(['/player', account.playerId, 'edit']);
+      }
+    });
+  }
+
   logout(): void {
     this.collapseNavbar();
     this.loginService.logout();

@@ -17,14 +17,14 @@
               name="matchTime"
               formControlName="matchTime"
               placeholder="YYYY-MM-DD HH:mm"
+              required="true"
             />
           </div>
         </div>
 
         <div class="form-group">
           <label class="form-control-label" for="field_cord">Kort</label>
-          <select class="form-control" id="field_cord" data-cy="cord" name="cord" formControlName="cord">
-            <option [ngValue]="null"></option>
+          <select class="form-control" id="field_cord" data-cy="cord" name="cord" formControlName="cord" required="true">
             <option
               [ngValue]="cordOption.id === editForm.get('cord')!.value?.id ? editForm.get('cord')!.value : cordOption"
               *ngFor="let cordOption of cordsCollection; trackBy: trackCordById"
@@ -33,25 +33,11 @@
             </option>
           </select>
         </div>
-
-        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
-          <label class="form-control-label" for="field_challengeStatus"> Durum</label>
-          <select
-            class="form-control"
-            name="challengeStatus"
-            formControlName="challengeStatus"
-            id="field_challengeStatus"
-            data-cy="challengeStatus"
-          >
-            <option [ngValue]="null"></option>
-            <option *ngFor="let challengeStatus of challengeStatusValues" [value]="challengeStatus">{{ challengeStatus }}</option>
-          </select>
-        </div>
       </div>
 
       <div>
         <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>İptal</span>
         </button>
 
         <button
@@ -61,7 +47,7 @@
           [disabled]="editForm.invalid || isSaving"
           class="btn btn-primary"
         >
-          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Teklif</span>
         </button>
       </div>
     </form>

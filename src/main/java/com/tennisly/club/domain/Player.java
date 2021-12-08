@@ -49,8 +49,6 @@ public class Player implements Serializable {
     @JoinColumn(unique = true)
     private User internalUser;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here
-
     public Long getId() {
         return this.id;
     }

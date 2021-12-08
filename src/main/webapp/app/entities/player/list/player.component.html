@@ -30,7 +30,12 @@
           <td>
             <a [routerLink]="['/player', player.id, 'view']">{{ player.fullName }} </a>
           </td>
-          <td>{{ player.level }}</td>
+          <td>
+            <span *ngIf="player.level === Level.BEGINNER"> Başlangıç</span>
+            <span *ngIf="player.level === Level.INTERMEDIATE"> Orta</span>
+            <span *ngIf="player.level === Level.ADVANCED"> İyi</span>
+            <span *ngIf="player.level === Level.PROFICIENT"> Profesyonel</span>
+          </td>
         </tr>
       </tbody>
     </table>

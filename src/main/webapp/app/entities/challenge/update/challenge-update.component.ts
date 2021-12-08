@@ -8,14 +8,16 @@ import { finalize, map } from 'rxjs/operators';
 import * as dayjs from 'dayjs';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 
-import { IChallenge, Challenge } from '../challenge.model';
+import { Challenge, IChallenge } from '../challenge.model';
 import { ChallengeService } from '../service/challenge.service';
 import { ICord } from 'app/entities/cord/cord.model';
 import { CordService } from 'app/entities/cord/service/cord.service';
-import { IPlayer } from 'app/entities/player/player.model';
+import { IPlayer, Player } from 'app/entities/player/player.model';
 import { PlayerService } from 'app/entities/player/service/player.service';
 import { ChallengeStatus } from 'app/entities/enumerations/challenge-status.model';
 import { GeneralStatus } from 'app/entities/enumerations/general-status.model';
+import { Account } from '../../../core/auth/account.model';
+import { AccountService } from '../../../core/auth/account.service';
 
 @Component({
   selector: 'jhi-challenge-update',
@@ -28,6 +30,7 @@ export class ChallengeUpdateComponent implements OnInit {
 
   cordsCollection: ICord[] = [];
   playersSharedCollection: IPlayer[] = [];
+  account: Account | null = null;
 
   editForm = this.fb.group({
     id: [],
@@ -43,6 +46,7 @@ export class ChallengeUpdateComponent implements OnInit {
     protected challengeService: ChallengeService,
     protected cordService: CordService,
     protected playerService: PlayerService,
+    private accountService: AccountService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder,
     private router: Router
@@ -54,6 +58,7 @@ export class ChallengeUpdateComponent implements OnInit {
         const today = dayjs().startOf('day');
         challenge.matchTime = today;
       }
+      this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
 
       this.updateForm(challenge);
 
@@ -68,9 +73,18 @@ export class ChallengeUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const challenge = this.createFromForm();
+    challenge.challengeStatus = ChallengeStatus.REQUESTED;
+
     if (challenge.id !== undefined) {
       this.subscribeToSaveResponse(this.challengeService.update(challenge));
     } else {
+      if (this.account?.playerId) {
+        const proposer = new Player();
+        proposer.id = this.account.playerId;
+        challenge.proposer = proposer;
+        challenge.challengeStatus = ChallengeStatus.REQUESTED;
+        challenge.status = GeneralStatus.ACTIVE;
+      }
       this.subscribeToSaveResponse(this.challengeService.create(challenge));
     }
   }

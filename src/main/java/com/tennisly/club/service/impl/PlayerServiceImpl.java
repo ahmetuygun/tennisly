@@ -1,12 +1,20 @@
 package com.tennisly.club.service.impl;
 
 import com.tennisly.club.domain.Player;
+import com.tennisly.club.domain.User;
 import com.tennisly.club.repository.PlayerRepository;
+import com.tennisly.club.repository.UserRepository;
+import com.tennisly.club.security.SecurityUtils;
 import com.tennisly.club.service.PlayerService;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,11 +74,23 @@ public class PlayerServiceImpl implements PlayerService {
             .map(playerRepository::save);
     }
 
+    @Autowired
+    UserRepository userRepository;
+
     @Override
     @Transactional(readOnly = true)
     public Page<Player> findAll(Pageable pageable) {
+        Optional<String> login = SecurityUtils.getCurrentUserLogin();
+        User user = userRepository.findOneByLogin(login.orElseThrow()).orElseThrow();
+        List<Player> players = playerRepository
+            .findAll(pageable)
+            .stream()
+            .filter(player -> player.getInternalUser() != null && player.getInternalUser().getId() != user.getId())
+            .collect(Collectors.toList());
+
         log.debug("Request to get all Players");
-        return playerRepository.findAll(pageable);
+
+        return new PageImpl<>(players);
     }
 
     @Override

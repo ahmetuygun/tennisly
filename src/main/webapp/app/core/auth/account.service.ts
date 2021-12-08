@@ -48,7 +48,11 @@ export class AccountService {
       this.accountCache$ = this.fetch().pipe(
         tap((account: Account) => {
           this.authenticate(account);
-          this.navigateToStoredUrl();
+          if (account.playerId) {
+            this.navigateToStoredUrl();
+          } else {
+            this.router.navigate(['/player/new']);
+          }
         }),
         shareReplay()
       );

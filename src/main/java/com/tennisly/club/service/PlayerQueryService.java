@@ -3,12 +3,18 @@ package com.tennisly.club.service;
 import com.tennisly.club.domain.*; // for static metamodels
 import com.tennisly.club.domain.Player;
 import com.tennisly.club.repository.PlayerRepository;
+import com.tennisly.club.repository.UserRepository;
+import com.tennisly.club.security.SecurityUtils;
 import com.tennisly.club.service.criteria.PlayerCriteria;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.persistence.criteria.JoinType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -51,11 +57,23 @@ public class PlayerQueryService extends QueryService<Player> {
      * @param page The page, which should be returned.
      * @return the matching entities.
      */
+
+    @Autowired
+    UserRepository userRepository;
+
     @Transactional(readOnly = true)
     public Page<Player> findByCriteria(PlayerCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
         final Specification<Player> specification = createSpecification(criteria);
-        return playerRepository.findAll(specification, page);
+        Optional<String> login = SecurityUtils.getCurrentUserLogin();
+        User user = userRepository.findOneByLogin(login.orElseThrow()).orElseThrow();
+        List<Player> players = playerRepository
+            .findAll(specification, page)
+            .stream()
+            .filter(player -> player.getInternalUser() != null && player.getInternalUser().getId() != user.getId())
+            .collect(Collectors.toList());
+
+        return new PageImpl<>(players);
     }
 
     /**

@@ -12,18 +12,27 @@ import { EventManager, EventWithContent } from 'app/core/util/event-manager.serv
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
-import { Gender } from 'app/entities/enumerations/gender.model';
-import { Level } from 'app/entities/enumerations/level.model';
+import { Gender, GenderLabelMapping } from 'app/entities/enumerations/gender.model';
+import { Level, LevelLabelMapping } from 'app/entities/enumerations/level.model';
 import { GeneralStatus } from 'app/entities/enumerations/general-status.model';
+import { Account } from '../../../core/auth/account.model';
+import { AccountService } from '../../../core/auth/account.service';
+import { User } from '../../../admin/user-management/user-management.model';
 
 @Component({
   selector: 'jhi-player-update',
   templateUrl: './player-update.component.html',
 })
 export class PlayerUpdateComponent implements OnInit {
+  account: Account | null = null;
+
   isSaving = false;
-  genderValues = Object.keys(Gender);
-  levelValues = Object.keys(Level);
+
+  public GenderLabelMapping = GenderLabelMapping;
+  genderValues = Object.values(Gender);
+
+  public LevelLabelMapping = LevelLabelMapping;
+  levelValues = Object.values(Level);
   generalStatusValues = Object.keys(GeneralStatus);
 
   usersSharedCollection: IUser[] = [];
@@ -47,14 +56,15 @@ export class PlayerUpdateComponent implements OnInit {
     protected userService: UserService,
     protected elementRef: ElementRef,
     protected activatedRoute: ActivatedRoute,
-    protected fb: FormBuilder
+    protected fb: FormBuilder,
+    private accountService: AccountService
   ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ player }) => {
       this.updateForm(player);
-
       this.loadRelationshipsOptions();
+      this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
     });
   }
 
@@ -103,12 +113,21 @@ export class PlayerUpdateComponent implements OnInit {
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IPlayer>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
-      () => this.onSaveSuccess(),
+      received => {
+        this.onSaveSuccess(received.body);
+      },
       () => this.onSaveError()
     );
   }
 
-  protected onSaveSuccess(): void {
+  protected onSaveSuccess(player: IPlayer | null): void {
+    if (player?.id && this.account) {
+      this.account.playerId = player.id;
+      this.accountService.save(this.account).subscribe(() => {
+        this.accountService.authenticate(this.account);
+      });
+    }
+
     this.previousState();
   }
 
@@ -145,6 +164,12 @@ export class PlayerUpdateComponent implements OnInit {
   }
 
   protected createFromForm(): IPlayer {
+    const user = new User();
+    if (this.account) {
+      if (this.account.id) {
+        user.id = this.account.id;
+      }
+    }
     return {
       ...new Player(),
       id: this.editForm.get(['id'])!.value,
@@ -155,7 +180,7 @@ export class PlayerUpdateComponent implements OnInit {
       photoContentType: this.editForm.get(['photoContentType'])!.value,
       photo: this.editForm.get(['photo'])!.value,
       status: this.editForm.get(['status'])!.value,
-      internalUser: this.editForm.get(['internalUser'])!.value,
+      internalUser: user,
     };
   }
 }

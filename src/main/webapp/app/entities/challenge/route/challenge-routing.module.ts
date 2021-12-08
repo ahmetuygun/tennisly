@@ -13,7 +13,9 @@ const challengeRoute: Routes = [
     component: ChallengeComponent,
     data: {
       defaultSort: 'id,asc',
+      pageTitle: 'Karşılaşma',
     },
+
     canActivate: [UserRouteAccessService],
   },
   {

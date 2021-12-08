@@ -1,5 +1,5 @@
-<div class="row justify-content-center">
-  <div class="col-8">
+<div class="row justify-content-sm-center">
+  <div class="col-12">
     <div *ngIf="challenge">
       <h2 data-cy="challengeDetailsHeading"><span>Karşılaşma</span></h2>
 
@@ -16,7 +16,10 @@
         </dd>
         <dt><span>Durum:</span></dt>
         <dd>
-          <span>{{ challenge.challengeStatus }}</span>
+          <span *ngIf="challenge.challengeStatus === ChallengeStatus.REQUESTED"> Teklif</span>
+          <span *ngIf="challenge.challengeStatus === ChallengeStatus.CANCELLED"> İptal</span>
+          <span *ngIf="challenge.challengeStatus === ChallengeStatus.ACCEPTED"> Kabul</span>
+          <span *ngIf="challenge.challengeStatus === ChallengeStatus.REJECTED"> Red</span>
         </dd>
 
         <dt><span>Kort:</span></dt>
@@ -39,13 +42,52 @@
         </dd>
       </dl>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Geri</span>
-      </button>
+      <div class="d-flex justify-content-center">
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Geri</span>
+        </button>
 
-      <button type="button" class="btn btn-primary"><fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Düzenle</span></button>
-      <button type="button" class="btn btn-primary"><fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>İptal Et</span></button>
-      <button type="button" class="btn btn-primary"><fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Reddet</span></button>
+        <div *ngIf="challenge.proposer?.id === currentAccount?.playerId">
+          <button [routerLink]="['/challenge', challenge.id, 'edit']" class="btn btn-primary" data-cy="entityEditButton">
+            <fa-icon icon="pencil-alt"></fa-icon><span>Düzenle</span>
+          </button>
+        </div>
+
+        <div
+          *ngIf="
+            (challenge.challengeStatus === ChallengeStatus.REQUESTED ||
+              challenge.challengeStatus === ChallengeStatus.REJECTED ||
+              challenge.challengeStatus === ChallengeStatus.CANCELLED) &&
+            challenge.proposer?.id !== currentAccount?.playerId
+          "
+        >
+          <button (click)="updateChallengeStatus(ChallengeStatus.ACCEPTED)" class="btn btn-primary">
+            <fa-icon icon="check"></fa-icon><span>Kabul Et</span>
+          </button>
+        </div>
+
+        <div
+          *ngIf="
+            (challenge.challengeStatus === ChallengeStatus.REQUESTED || challenge.challengeStatus === ChallengeStatus.ACCEPTED) &&
+            challenge.proposer?.id !== currentAccount?.playerId
+          "
+        >
+          <button (click)="updateChallengeStatus(ChallengeStatus.REJECTED)" class="btn btn-primary">
+            <fa-icon icon="ban"></fa-icon><span>Reddet</span>
+          </button>
+        </div>
+
+        <div
+          *ngIf="
+            challenge.challengeStatus === ChallengeStatus.ACCEPTED ||
+            (challenge.proposer?.id === currentAccount?.playerId && challenge.challengeStatus === ChallengeStatus.REQUESTED)
+          "
+        >
+          <button (click)="updateChallengeStatus(ChallengeStatus.CANCELLED)" class="btn btn-primary">
+            <fa-icon icon="ban"></fa-icon><span>İptal Et</span>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

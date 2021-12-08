@@ -14,7 +14,17 @@ describe('SettingsComponent', () => {
   let comp: SettingsComponent;
   let fixture: ComponentFixture<SettingsComponent>;
   let mockAccountService: AccountService;
-  const account: Account = {
+  const account: {
+    firstName: string;
+    lastName: string;
+    langKey: string;
+    imageUrl: string;
+    id: number;
+    login: string;
+    email: string;
+    authorities: any[];
+    activated: boolean;
+  } = {
     firstName: 'John',
     lastName: 'Doe',
     activated: true,
@@ -23,6 +33,7 @@ describe('SettingsComponent', () => {
     login: 'john',
     authorities: [],
     imageUrl: '',
+    id: 1,
   };
 
   beforeEach(

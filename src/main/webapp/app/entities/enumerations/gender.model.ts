@@ -1,5 +1,10 @@
 export enum Gender {
-  MAN = 'Erkek',
+  MAN = 'MAN',
 
-  WOMEN = 'Kadın',
+  WOMEN = 'WOMEN',
 }
+
+export const GenderLabelMapping: Record<Gender, string> = {
+  [Gender.MAN]: 'Erkek',
+  [Gender.WOMEN]: 'Kadın',
+};

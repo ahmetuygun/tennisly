@@ -1,5 +1,5 @@
-<div class="row justify-content-center">
-  <div class="col-8">
+<div class="row justify-content-sm-center">
+  <div class="col-12">
     <div *ngIf="player">
       <h2 data-cy="playerDetailsHeading"><span>Oyuncu Profili</span></h2>
 
@@ -10,7 +10,7 @@
       <dd>
         <div *ngIf="player.photo">
           <a (click)="openFile(player.photo, player.photoContentType)">
-            <img [src]="'data:' + player.photoContentType + ';base64,' + player.photo" style="max-width: 100%" alt="player image" />
+            <img [src]="'data:' + player.photoContentType + ';base64,' + player.photo" class="profilePhoto" alt="player image" />
           </a>
         </div>
       </dd>
@@ -22,7 +22,10 @@
 
         <dt><span>Seviye:</span></dt>
         <dd>
-          <span>{{ player.level }}</span>
+          <span *ngIf="player.level === Level.BEGINNER"> Başlangıç</span>
+          <span *ngIf="player.level === Level.INTERMEDIATE"> Orta</span>
+          <span *ngIf="player.level === Level.ADVANCED"> İyi</span>
+          <span *ngIf="player.level === Level.PROFICIENT"> Profesyonel</span>
         </dd>
         <dt><span>Phone:</span></dt>
         <dd>

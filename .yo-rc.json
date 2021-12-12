@@ -44,6 +44,15 @@
     "enableGradleEnterprise": false,
     "languages": ["en", "fr"],
     "entities": ["Cord", "Player", "Challenge"],
-    "lastLiquibaseTimestamp": 1636059655000
+    "lastLiquibaseTimestamp": 1636059655000,
+    "aws": {
+      "applicationName": "tennisly-club-20150",
+      "environmentName": "tennisly-club-20150",
+      "bucketName": "tennisly-club-20150",
+      "instanceType": "t2.micro",
+      "awsRegion": "eu-central-1",
+      "dbName": "tennisly",
+      "dbInstanceClass": "db.t2.micro"
+    }
   }
 }
